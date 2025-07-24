@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja"> <!-- 使用する言語は「日本語」-->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Topページ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- CSSの適用 -->>
+    <title>こもれび-Top</title>
 </head>
 <body>
-    <h1>Topページ</h1>
+
+<div class="content">
+    <section>
+            <h1 class="logo-text">こもれび</h1>
+    </section>
+
+    <section>
+        <button class="btn" id="login-btn">ログイン</button>
+    </section>
+
+    <section>
+        <button class="btn" id="signup-btn">新規登録</button>
+    </section>
+</div>
+
 </body>
 </html>
