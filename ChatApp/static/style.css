@@ -1,6 +1,7 @@
 body {
   /* 背景画像の設定 */
   background-image: url(img/background.jpg); 
+  /* 画像を背景にフィットさせる */
   background-size: cover;
   /* 外側の余白 */
   margin: 0;
@@ -10,13 +11,15 @@ body {
 
 .content {
   /* .content 要素の最大の横幅 */
-  max-width: 402px; 
+  max-width: 420px; 
   /* 外側の余白 */
   margin: 0 auto;
   /* 内側の余白 */
   padding: 32px;
   /* 背景画像の設定 */
   background-image: url(img/istockphoto-1203310959-1024x1024.jpg); 
+  /* 画像を背景にフィットさせる */
+  background-size: cover;
   /* 枠線 */
   border: 1px solid black;
   /* 丸角 */
@@ -74,3 +77,16 @@ body {
   color: #666464;
 }
 
+@media screen and (max-width: 420px) {
+  .content {
+    /*親要素（bodyの100%まで）*/
+    max-width: 100%;
+    /* 外側の余白 */
+    margin: 0 auto;
+    /* 内側の余白 */
+    padding: 32px 16px;
+    /* widthとheightにpaddingやborderのサイズを含むようにする */
+    /* 要素が画面からはみ出ないようにする */
+    box-sizing: border-box;
+  }
+}
