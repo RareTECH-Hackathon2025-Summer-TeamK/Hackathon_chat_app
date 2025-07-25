@@ -1,6 +1,7 @@
 body {
   /* 背景画像の設定 */
-  background-image: url(img/dappled_sunlight.jpg); 
+  background-image: url(img/background.jpg); 
+  background-size: cover;
   /* 外側の余白 */
   margin: 0;
   /* 内側の余白 */
@@ -14,8 +15,10 @@ body {
   margin: 0 auto;
   /* 内側の余白 */
   padding: 32px;
-  /* 背景色をグラデーションで表現 */
-  background: linear-gradient(5deg, #a2f797, #ffffff);
+  /* 背景画像の設定 */
+  background-image: url(img/istockphoto-1203310959-1024x1024.jpg); 
+  /* 枠線 */
+  border: 1px solid black;
   /* 丸角 */
   border-radius: 20px;
   /* コンテンツを中央寄りにする */
