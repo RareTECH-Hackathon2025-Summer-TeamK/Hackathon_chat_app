@@ -7,7 +7,8 @@ body {
 
 .content {
   /* .content 要素の最大の横幅 */
-  max-width: 420px; 
+  max-width: 402px; 
+  max-height: 874px;
   /* 外側の余白 */
   margin: 0 auto;
   /* 内側の余白 */
@@ -27,6 +28,8 @@ body {
 }
 
 .logo-text {
+  /* 上マージンの設定 */
+  margin: 132px 20px 53px;
   /* フォントサイズ */
   font-size: 48px;
   /* 文字間のスペース */
@@ -45,9 +48,11 @@ body {
   /* 内側の余白 */
   padding: 6px;
   /* 外側の余白 */
-  margin: 20px;
+  margin: 53px 20px;
   /* ボタンの横幅の設定 */
   width: 350px;
+  /* ボタンの縦幅の設定 */
+  height: 50px;
 }
 
 .btn:hover {
@@ -73,7 +78,7 @@ body {
   color: #666464;
 }
 
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 402px) {
   .content {
     /*親要素（bodyの100%まで）*/
     max-width: 100%;
