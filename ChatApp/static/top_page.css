@@ -8,6 +8,7 @@ body {
 .content {
   /* .content 要素の最大の横幅 */
   max-width: 402px; 
+  /* .content 要素の最大の縦幅 */
   max-height: 874px;
   /* 外側の余白 */
   margin: 0 auto;
@@ -28,7 +29,7 @@ body {
 }
 
 .logo-text {
-  /* 上マージンの設定 */
+  /* 外側の余白 */
   margin: 132px 20px 53px;
   /* フォントサイズ */
   font-size: 48px;
