@@ -7,7 +7,7 @@ body {
 
 .content {
   /* .content 要素の最大の横幅 */
-  max-width: 402px; 
+  max-width: 415px; 
   /* .content 要素の最大の縦幅 */
   max-height: 874px;
   /* 外側の余白 */
@@ -20,8 +20,6 @@ body {
   background-size: cover;
   /* 枠線 */
   border: 1px solid black;
-  /* 丸角 */
-  border-radius: 20px;
   /* コンテンツを中央寄りにする */
   text-align: center;
   /* コンテンツを表示する高さを画面の高さ100%で表示する */
@@ -79,7 +77,7 @@ body {
   color: #666464;
 }
 
-@media screen and (max-width: 402px) {
+@media screen and (max-width: 415px) {
   .content {
     /*親要素（bodyの100%まで）*/
     max-width: 100%;
