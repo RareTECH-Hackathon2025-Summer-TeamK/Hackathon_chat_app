@@ -18,7 +18,7 @@ app.secret_key = os.getenv('SEACRET_KEY',uuid.uuid4().hex)
 def index():
     uid =session.get('uid')
     if uid is None:
-        return redirect(url_for('top.html'))
+        return render_template('top.html')
     return redirect(url_for('channel_view'))
 
 ## サインアップページ
