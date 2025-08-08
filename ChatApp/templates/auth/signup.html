@@ -1,1 +1,49 @@
-<h1>サインアップページ</h1>
+<!DOCTYPE html>
+<html lang="ja"> <!-- 使用する言語は「日本語」-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}"> <!-- CSSの適用 -->
+    <title>こもれび-SignUp</title>
+</head>
+
+<body>
+
+<div class="content">
+    <section>
+        <h1 class="logo-text">こもれび</h1>
+    </section>
+
+    <section>
+        <label class="form-text">
+            ニックネーム<br>
+            <input type="text">
+            <p>※20文字以内に設定してください</p>
+        </label>
+
+        <label class="form-text">
+            メールアドレス<br>
+            <input type="email">
+            <p>※50文字以内に設定してください</p>
+        </label>
+
+        <label class="form-text">
+            パスワード<br>
+            <input type="password">
+            <p>※120文字以内に設定してください</p>
+        </label>
+
+        <label class="form-text">
+            パスワード確認用<br>
+            <input type="password_confirm">
+        </label>
+    </section>
+
+    <section>
+        <button class="btn" id="signup-btn">登録</button>
+    </section>
+
+</div>
+
+</body>
+</html>
