@@ -38,8 +38,9 @@ h1 {
 }
 
 .placeholder {
-     width: 350px;
-     height: 30px;
+     width: 375px;
+     height: 40px;
+     margin-top: 5px;
 }
 
 .title {
@@ -56,8 +57,13 @@ h1 {
 
 .cre_btn {
      background: #A4DD00;
+     border: 1px solid #ffffff;
      color: #ffffff;
+     font-size: 24px;
+     font-weight: bold;
      width: 200px;
      height: 50px;
      border-radius: 25px;
+     display: block;
+     margin: 20px auto 0;
 }
