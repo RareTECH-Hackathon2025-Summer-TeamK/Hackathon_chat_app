@@ -11,15 +11,19 @@
 
 <div class="content">
     <section>
-            <h1 class="logo-text">こもれび</h1>
+        <h1 class="logo-text">こもれび</h1>
     </section>
 
     <section>
-        <button class="btn" id="login-btn">ログイン</button>
+        <a href="{{ url_for('login_view') }}">
+            <button class="btn" id="login-btn">ログイン</button>
+        </a>
     </section>
 
     <section>
-        <button class="btn" id="signup-btn">新規登録</button>
+        <a href="{{ url_for('signup_view') }}">
+            <button class="btn" id="signup-btn">新規登録</button>
+        </a>
     </section>
 </div>
 
