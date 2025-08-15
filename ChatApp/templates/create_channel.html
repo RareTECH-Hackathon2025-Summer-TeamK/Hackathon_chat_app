@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>チャンネル作成</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="チャンネル作成">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <h1>チャンネル作成</h1>
+      </div>
+      <div class="create">
+        <p class="title">チャンネル名</p>
+        <div>
+         <input 
+          type="text" 
+          class="channel-input"  
+          placeholder=""
+          />
+        </div>
+        <p class="notice">※20文字以内に設定してください</p>
+        <div>
+          <button class="cre_btn">作成</button>
+        </div>
+      </div>
+    </div>  
+  </body>
+</html>
