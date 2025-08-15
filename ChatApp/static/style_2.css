@@ -7,7 +7,8 @@
 
 .container{
      box-sizing: border-box;
-     width: 415px ;
+     max-width: 415px ;
+     max-height: 874px;
      margin: 0;
 }
   
@@ -132,4 +133,9 @@ h1 {
      margin-right: auto;
 }
 
-
+.text-input-area {
+     position: fixed;
+     bottom: 0;
+     width: calc(100vw);
+     height: 15vh;
+}
