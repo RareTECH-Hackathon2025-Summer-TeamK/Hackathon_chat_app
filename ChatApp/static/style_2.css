@@ -1,3 +1,4 @@
+/* チャンネル選択、チャンネル作成、チャットページ共通 */
 * {
   margin: 0; /* 全要素のマージンをリセット */
   padding: 0; /* 全要素のパディングをリセット */
@@ -9,14 +10,15 @@
      width: 415px ;
      margin: 0;
 }
-     
+  
+/* ページ上部の共通エリア */
 h1 {
      padding: 10px 20px ;
      font-size: 24px;
      color: #000000;
 }
 
-
+/* チャンネル選択ページのコンテンツエリア */
 .box {
      box-sizing: border-box;
      border-top: 2px solid #A4DD00 ;
@@ -31,6 +33,7 @@ h1 {
      margin: 20px 20px;
 }
 
+/* チャンネル作成ページのコンテンツエリア */
 .create {
      box-sizing: border-box;
      border-top: 2px solid #A4DD00 ;
@@ -82,3 +85,51 @@ h1 {
      display: block;
      margin: 20px auto 0;
 }
+
+/* チャットページのコンテンツエリア */
+
+/* チャットエリア */
+.message-area {
+     box-sizing: border-box;
+     border-top: 2px solid #A4DD00 ;
+     padding: 20px 20px;
+     overflow-y: scroll;
+     overflow-x: hidden;
+     display: flex;
+     flex-direction: column;
+}
+
+/* 自分のチャットエリア */
+.my-messages {
+     display: flex;
+     flex-direction: column;
+}
+
+/* 自分の投稿内容 */
+.my-message-box {
+     font-size: 24px;
+     color: #000000;
+     margin-left: auto;
+}
+
+/* 他者のチャット表示エリア */
+.messages {
+     display: flex;
+     flex-direction: column;
+}
+
+/* 他者のニックネーム表示 */
+.user-name {
+  font-size: 16px;
+  color: #666464;
+  margin: 1px 0;
+}
+
+/* 他者の投稿内容 */
+.user-massages-box{
+     font-size: 24px;
+     color: #000000;
+     margin-right: auto;
+}
+
+
