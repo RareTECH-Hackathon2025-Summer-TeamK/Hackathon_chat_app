@@ -1,8 +1,2 @@
-class User:
-    pass 
+#データベース連携を記載する
 
-class Channel:
-    pass
-
-class Message:
-    pass

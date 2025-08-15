@@ -1,178 +1,83 @@
-from flask import Flask, render_template,flash, request, session,redirect,url_for
-from datetime import datetime
-import hashlib 
+#モジュールのインポート
+from flask import Flask, render_template, session, request, redirect, url_for, flash
 import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from datetime import timedelta
 
-from models import User, Channel, Message
 
+#Webアプリ作成
+app = Flask(__name__) 
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-# インスタンス生成
-app = Flask(__name__)
-app.secret_key = os.getenv('SEACRET_KEY',uuid.uuid4().hex)
+#セッション関連
+#有効期限を30日間と設定
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30) 
 
-# ルーティング
-
-## TOPページ
-@app.route('/', methods = ['GET'])
+#トップページ
+@app.route("/", methods=['GET'])
 def index():
-    uid =session.get('uid')
-    if uid is None:
-        return render_template('top.html')
-    return redirect(url_for('channel_view'))
+    if "user_id"  in session:
+        return redirect(url_for("channels_view"))
+    else:
+        return render_template("top.html")  
 
-## サインアップページ
-@app.route('/signup', methods=['GET'])
+#サインアップ
+@app.route("/signup", methods=['GET','POST'])
 def signup_view():
-    return render_template('auth/signup.html')
-
-## サインアップ処理
-@app.route('/signup', methods=['POST'])
-def signup_process():
-    user_name = request.form.get('user_name')
-    email = request.form.get('email')
-    password = request.form.get('password')
-    passwordConfirmation = request.form.get('password-confirmation')
+    if request.method == 'GET':
+        return render_template("auth/signup.html")
     
-    if user_name == '' or email == '' or password == '' or passwordConfirmation == '':
-        flash('空のフォームがあるようです')
-    elif password != passwordConfirmation:
-        flash('パスワードが一致しません')
-    else:
-        uid = uuid.uuid4()
-        password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        registered_user = User.find_by_email(email)
-        
-        if registered_user != None:
-            flash('既に登録されているようです')
-        else:
-            User.create(uid, user_name, email, password )
-            UserId = int(uid)
-            session['uid'] = UserId
-            return redirect(url_for('channels_view'))            
-    return redirect(url_for('signup_view'))
+    user_id = str(uuid.uuid4())
+    user_name =request.form.get('user_name')
+    email =request.form.get('email')
+    password =request.form.get('password')
+    password_confirmation =request.form.get('password-confermation')
+    ##パスワードをハッシュ化
+    password_hash = generate_password_hash(password)
 
-## ログインページの表示
-@app.route('/login', methods=['GET'])
-def login_view(): 
-    return render_template('auth/login.html')
+    ##未入力チェック
+    if not user_name or not email or not password:
+        flash("未入力の項目があります")
+    elif password != password_confirmation:
+        return redirect(url_for("signup_view"))
 
-## ログイン処理
-@app.route('/login', methods=['POST'])
-def login_process(): 
-    email = request.form.get('email')
-    password = request.form.get('password')
+    session["user_id"] = user_id
+    session.permanent = True 
+    return redirect(url_for("channels_view"))
+
+#ログイン
+@app.route("/login", methods =["GET", "POST"])
+def login_view():
+    if request.method == "GET":
+        return render_template("auth/login.html")
     
-    if email =='' or password == '':
-        flash('空のフォームがあるようです')
-    else:
-        user = User.find_by_emial(email)
-        if user is None:
-            flash('このユーザーは存在しません')
-        else:
-            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            if hashPassword != user["password"]:
-                flash('パスワードが間違っています！')
-            else:
-                session['uid'] = user["uid"]
-                return redirect(url_for('channels_view'))
-    return redirect(url_for('login_view'))
+    email =request.form.get('email')
+    password =request.form.get('password')
 
-## ログアウト処理  
-@app.route('/logout')
+   ##未入力チェック
+    if not email or not password:
+        flash("メールアドレスとパスワードを入力してください")
+        return redirect(url_for("login_view"))
+
+    ##DBからレコード取得
+    user = User.find_by_email(email)
+
+    ##ユーザーが存在しないorパス不一致
+    if not user or not check_password_hash(user["password_hash"], password):
+        flash("メールアドレスまたはパスワードが違います")
+        return redirect(url_for("login_view"))
+
+    user_id = session["user_id"] 
+    session.permanent = True 
+    return redirect(url_for("channels_view"))
+
+#ログアウト
+@app.route("/logout", methods =["GET"])
 def logout():
     session.clear()
-    return redirect(url_for('login_view'))
+    return redirect(url_for("login_view"))
 
 
-## チャンネル一覧ページの表示   
-@app.route('/channels', methods =['GET'])
-def channels_view(): 
-    uid = session.get('uid') #ユーザーの入力したuidがあるか確認
-    if uid is None:
-        return redirect(url_for('login_view'))
-    else:
-        channels = Channel.get_all() #DBから情報を取得する
-        channels.reverse() #新しい順に並べる
-        return render_template('channels.html', channels = channels, uid = uid)
-    
-##チャンネル作成（管理者）
-@app.route('/admin/channels/create',  methods =['POST'])
-def create_channel():
-    user = User.find(uid) 
-    uid = session.get('uid')
-    if uid is None or not user or not user.is_admin:
-     #未ログイン、存在しないユーザー、管理者以外はログイン画面へ戻る
-        return redirect(url_for('login_view'))
-
-    
-    channel_name = request.form.get('channel_name')
-    Channel.create(uid, channel_name)
-    
-    return redirect(url_for('admin_channels_view'))
-    
-    
-##チャンネル更新（管理者）
-@app.route('/admin/channels/update/<cid>', methods=['POST'])
-def update_channel(cid):
-    uid = session.get('uid')
-    user = User.find(uid)
-    if not user or not user.is_admin:
-     return redirect(url_for('login_view'))
-    
-    channel_name = request.form.get('channel_name')
-    Channel.update(uid, channel_name, cid)
-    return redirect(f'/channels/{cid}/messages')
-
-##チャンネル削除（管理者）
-@app.route('/admin/channels/delete/<cid>', methods=['POST'])
-def delete_channel(cid):
-    uid = session.get('uid')
-    user = User.find(uid)
-    if not user or not user.is_admin:
-     return redirect(url_for('login_view'))
-    
-    Channel.delete(cid)
-    return redirect(url_for('channels_view'))
-   
-      
-##チャンネル詳細ページの表示
-@app.route('/channels/<cid>/messages', methods=['GET'])
-def detail(cid):
-    #if文が入る
-    return render_template('messages.html')
-     
-    
-##メッセージの投稿
-@app.route('/channels/<cid>/messages', methods=['POST'])
-def create_message(cid):
-    uid = session.get('uid')
-    if uid is None:
-        return redirect(url_for('login_view'))
-    
-    message = request.form.get('message')
-    
-    if message: #messageが空なら投稿処理をスキップ
-        Message.create(uid,cid,message) #uid,cid,messageを記録
-    return redirect(f'/channels/{cid}/messages')
-
-##メッセージの削除
-@app.route('/channels/<cid>/messages/<messages_id>', methods=['POST'])
-def delete_message(cid, message_id):
-    user = User.find(session.get('uid'))
-    if not user or not user.is_admin:
-        return redirect(url_for('login_view'))
-    Message.delete(message_id)
-    return redirect(f'/channels/{cid}/messages')
-##404エラー
-app.errorhandler(404)
-def page_notfound(error):
-    return render_template('error/404.html'),404
-
-@app.errorhandler(500)
-def internal_server_error(error):
-    return render_template('error/500.html'),500
-
-# 実行
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True) # debug=True は、デバッグモードを有効
+if __name__ =='__main__':
+    app.run(host="0.0.0.0", debug=True,) 
