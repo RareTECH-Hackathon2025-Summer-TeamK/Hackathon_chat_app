@@ -37,10 +37,12 @@ h1 {
      padding: 20px 20px;
 }
 
-.placeholder {
+.channel-input {
      width: 375px;
      height: 40px;
      margin-top: 5px;
+     border: none;/* 既存の枠線を消す */
+     border-bottom: 1px solid #d9d9d9;
 }
 
 .title {
@@ -59,6 +61,19 @@ h1 {
      background: #A4DD00;
      border: 1px solid #ffffff;
      color: #ffffff;
+     font-size: 24px;
+     font-weight: bold;
+     width: 200px;
+     height: 50px;
+     border-radius: 25px;
+     display: block;
+     margin: 20px auto 0;
+}
+
+.cre_btn:active {
+     background: #ffffff;
+     border: 1px solid #A4DD00;
+     color: #A4DD00;
      font-size: 24px;
      font-weight: bold;
      width: 200px;
