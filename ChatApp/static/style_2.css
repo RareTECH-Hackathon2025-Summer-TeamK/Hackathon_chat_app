@@ -139,3 +139,27 @@ h1 {
      width: calc(100vw);
      height: 15vh;
 }
+
+
+.text-input-box{
+     box-sizing: border-box;
+     max-width: 375px ;
+     display: flex;
+     align-items: center;
+     height: 100%;
+}
+
+#message{
+     flex: 1;
+     height: 55px;
+
+}
+
+#add-message-button {
+     background-color: var(--navy_blue);
+     height: 55px;
+     width: 55px;
+     padding: 0;
+     margin: 0;
+}
+
