@@ -1,0 +1,79 @@
+/* チャンネル選択、チャンネル作成、チャットページ共通 */
+* {
+  margin: 0; /* 全要素のマージンをリセット */
+  padding: 0; /* 全要素のパディングをリセット */
+  box-sizing: border-box; /* widthとheightの計算にpaddingとborderを含める */
+}
+
+.container{
+     box-sizing: border-box;
+     max-width: 415px ;
+     max-height: 874px;
+     margin: 0;
+}
+  
+/* ページ上部の共通エリア */
+h1 {
+     padding: 10px 20px ;
+     font-size: 24px;
+     color: #000000;
+}
+
+     /* チャンネル編集ページのコンテンツエリア */
+.edit_channels {
+     box-sizing: border-box;
+     border-top: 2px solid #A4DD00 ;
+     padding-top: 20px;
+}
+
+.channel{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+
+.channel_name {
+     font-size: 24px;
+     color: #000000;
+     padding: 10px 20px;
+}
+
+.del_btn {
+    height: 30px;
+    width: 70px;
+    background-color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    color: #666466;
+    border: 1px solid #d9d9d9 ;
+    border-radius: 10px;
+}
+
+.add-channel{
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+.add_btn {
+    color: #000000;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding-right: 20px;
+}
+
+.add_btn:active{
+    color: #ffffff;
+    background-color: #666466;
+    border: none;
+    border-radius: 4px;    
+}
+
+ion-icon{
+     height: 32px;
+     width: 32px;
+     border: none;
+}
