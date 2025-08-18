@@ -1,82 +1,96 @@
 #モジュールのインポート
 from flask import Flask, render_template, session, request, redirect, url_for, flash
 import uuid
-from werkzeug.security import generate_password_hash, check_password_hash
+import re
 import os
+import hashlib
 from datetime import timedelta
 
+from models import User
 
-#Webアプリ作成
+
+EMAIL_PATTERN = r"^[\w.+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]+$"
+
 app = Flask(__name__) 
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', uuid.uuid4().hex)
 
-#セッション関連
-#有効期限を30日間と設定
+#セッションの有効期限を30日間と設定
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30) 
 
-#トップページ
-@app.route("/", methods=['GET'])
-def index():
-    if "user_id"  in session:
-        return redirect(url_for("channels_view"))
-    else:
-        return render_template("top.html")  
+#ブラウザにCSSや画像などの静的ファイルをキャッシュさせる期間を約31日と設定
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 2678400
 
-#サインアップ
-@app.route("/signup", methods=['GET','POST'])
+#トップページの表示
+@app.route('/', methods=['GET'])
+def index():
+    return render_template("top.html")  
+
+#サインアップページの表示
+@app.route('/signup', methods=['GET'])
 def signup_view():
-    if request.method == 'GET':
-        return render_template("auth/signup.html")
-    
-    user_id = str(uuid.uuid4())
+    return render_template('auth/signup.html')
+
+#サインアップ処理
+@app.route('/signup', methods=['POST'])
+def signup_process():
     user_name =request.form.get('user_name')
     email =request.form.get('email')
     password =request.form.get('password')
-    password_confirmation =request.form.get('password-confermation')
-    ##パスワードをハッシュ化
-    password_hash = generate_password_hash(password)
+    password_confirmation =request.form.get('password-confirmation')
 
-    ##未入力チェック
-    if not user_name or not email or not password:
-        flash("未入力の項目があります")
+    if user_name == '' or password == '' or password_confirmation == '':
+        flash('空のフォームがあります')
     elif password != password_confirmation:
-        return redirect(url_for("signup_view"))
+        flash('2つのパスワードの値が違っています')
+    elif re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        user_id = uuid.uuid4()
+        password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        registered_user = User.find_by_email(email)
 
-    session["user_id"] = user_id
-    session.permanent = True 
-    return redirect(url_for("channels_view"))
+        if registered_user != None:
+            flash('既に登録されているようです')
+        else:
+            User.create(user_id, user_name, email,password)
+            user_id = str(user_id)
+            session['user_id'] = user_id
+            return redirect(url_for('channels_view'))
+    return redirect(url_for('signup_view'))
 
-#ログイン
-@app.route("/login", methods =["GET", "POST"])
+#ログインページの表示
+@app.route('/login', methods =['GET'])
 def login_view():
-    if request.method == "GET":
-        return render_template("auth/login.html")
-    
+    return render_template('auth/login.html')
+
+#ログイン処理
+@app.route('/login',methods =['POST'])
+def login_process():
     email =request.form.get('email')
     password =request.form.get('password')
 
-   ##未入力チェック
-    if not email or not password:
-        flash("メールアドレスとパスワードを入力してください")
-        return redirect(url_for("login_view"))
+    if email =='' or password =='':
+        flash('空のフォームがあります')
+    else:
+        user = User.find_by_email(email)
+        if user is None:
+            flash('このユーザーは存在しません')
+        else:
+            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            if hashPassword != user["password"]:
+                flash('パスワードが間違っています')
+            else:
+                session['user_id'] = user["user_id"]
+                return redirect(url_for('channels_view'))
+    return redirect(url_for('login_view'))
 
-    ##DBからレコード取得
-    user = User.find_by_email(email)
 
-    ##ユーザーが存在しないorパス不一致
-    if not user or not check_password_hash(user["password_hash"], password):
-        flash("メールアドレスまたはパスワードが違います")
-        return redirect(url_for("login_view"))
-
-    user_id = session["user_id"] 
-    session.permanent = True 
-    return redirect(url_for("channels_view"))
-
-#ログアウト
+#ログアウト方法
 @app.route("/logout", methods =["GET"])
 def logout():
     session.clear()
     return redirect(url_for("login_view"))
+
 
 
 if __name__ =='__main__':
