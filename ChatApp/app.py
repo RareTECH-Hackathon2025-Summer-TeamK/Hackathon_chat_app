@@ -52,7 +52,7 @@ def signup_process():
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(user_id, user_name, email,password)
+            User.create(user_id, user_name, email, password)
             user_id = str(user_id)
             session['user_id'] = user_id
             return redirect(url_for('channels_view'))
@@ -81,6 +81,7 @@ def login_process():
                 flash('パスワードが間違っています')
             else:
                 session['user_id'] = user["user_id"]
+                session['email'] = user["email"]
                 return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
@@ -91,7 +92,13 @@ def logout():
     session.clear()
     return redirect(url_for("login_view"))
 
-
+## チャンネル一覧ページの表示   
+@app.route('/channels', methods =['GET'])
+def channels_view(): 
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    return render_template('channels.html')
 
 if __name__ =='__main__':
     app.run(host="0.0.0.0", debug=True,) 
