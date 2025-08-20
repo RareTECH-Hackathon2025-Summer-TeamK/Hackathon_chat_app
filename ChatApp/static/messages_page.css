@@ -1,0 +1,186 @@
+/* body要素のスタイル */
+body {
+  /* 外側の余白を0に設定 */
+  margin: 0;
+  /* 内側の余白を0に設定 */
+  padding: 0;
+}
+
+/* header要素のスタイル */
+header{
+  /* テキストを左揃えに設定 */
+  text-align: left;
+  /* 下枠線を設定（太さ2px、実線、緑色） */
+  border-bottom: 2px solid #A4DD00;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* .contentクラスのスタイル */
+.content {
+  /* .content 要素の最大の横幅 */
+  max-width: 415px; 
+  /* .content 要素の最大の縦幅 */
+  max-height: 874px;
+  /* 上下の外側の余白を0、左右の余白を自動に設定して中央揃え */
+  margin: 0 auto;
+  /* 内側の余白を32pxに設定 */
+  padding: 32px;
+  /* 枠線を設定（太さ1px、実線、黒色） */
+  border: 1px solid black;
+  /* コンテンツを中央寄りにする */
+  text-align: center;
+  /* コンテンツを表示する高さを画面の高さ100%で表示する */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 画面幅が415px以下のメディアクエリ */
+@media screen and (max-width: 415px) {
+  .content {
+    /*親要素（bodyの100%まで）*/
+    max-width: 100%;
+    /* 外側の余白 */
+    margin: 0 auto;
+    /* 内側の余白 */
+    padding: 32px 16px;
+    /* widthとheightにpaddingやborderのサイズを含むようにする */
+    /* 要素が画面からはみ出ないようにする */
+    box-sizing: border-box;
+  }
+}
+
+/* .messageクラスのスタイル */
+.message {
+  margin: 0;
+}
+.message-wrapper {
+  margin: 20px 0px;
+}
+.message p {
+  /* テキストを左揃えに設定 */
+  text-align: left;
+  margin:4px 0px 4px
+}
+
+.own-message {
+ /* ログインユーザー自身のメッセージを右寄せにする */
+  align-items: flex-end;
+}
+
+/* メッセージのコンテナにFlexboxを適用 */
+.message {
+  margin: 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+#messege-name {
+  font-weight: bold;
+}
+
+.message-btn {
+  /* 背景色を透明に設定 */
+  background-color: transparent;
+  /* 枠線をなしに設定 */
+  border: none;
+  /* 内側の余白を0に設定 */
+  padding: 0;
+}
+
+.message-btn img {
+  /* 幅を32pxに設定 */
+  width: 16px;
+  /* 高さを32pxに設定 */
+  height: 16px;
+}
+
+/* #form IDのスタイル */
+#form {
+  /* 親要素の幅の100%を最大の横幅に設定 */
+  max-width: 100%;
+}
+
+/* footer要素のスタイル */
+footer {
+  /* 幅を100%に設定 */
+  width: 100%;
+  /* 最大の横幅を415pxに設定 */
+  max-width: 415px;
+  /* 内側の余白を10pxに設定 */
+  padding: 10px;
+  /* paddingとborderを要素の幅と高さに含めるように設定 */
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+/* .message-formクラスのスタイル */
+.message-form {
+  /* フレックスボックスとして表示 */
+  display: flex;
+  /* アイテムを中央揃えに設定 */
+  align-items: center;
+  /* アイテム間の間隔を10pxに設定 */
+  gap: 10px;
+}
+
+/* .message-form内のinput要素のスタイル */
+.message-form input {
+  /* フレックスアイテムの伸長係数を1に設定 */
+  flex-grow: 1;
+  /* 内側の余白を8pxに設定 */
+  padding: 8px;
+}
+
+/* #form-btn IDのスタイル */
+#form-btn {
+  /* 背景色を透明に設定 */
+  background-color: transparent;
+  /* 枠線をなしに設定 */
+  border: none;
+  /* 内側の余白を0に設定 */
+  padding: 0;
+}
+
+/* #form-btn内のimg要素のスタイル */
+#form-btn img {
+  /* 幅を32pxに設定 */
+  width: 32px;
+  /* 高さを32pxに設定 */
+  height: 32px;
+}
+
+.message-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-form form {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-form input[type="text"] {
+  flex-grow: 1;
+  padding: 8px;
+}
+
+/* 編集フォームは通常非表示 */
+.edit-form {
+  display: none;
+}
+
+/* チェックボックスがONの時、後続の.message要素を非表示にする */
+.edit-toggle-checkbox:checked ~ .message {
+  display: none;
+}
+
+/* チェックボックスがONの時、後続の.edit-form要素を表示する */
+.edit-toggle-checkbox:checked ~ .edit-form {
+  display: block;
+}
