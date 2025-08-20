@@ -15,7 +15,7 @@
       {% for channel in channels %}
         <div class="box">
         <div class="item">
-          <a href="{{ url_for('channels_view', cid=channel.channel_id) }}">
+          <a href="{{ url_for('messages', cid=channel.channel_id) }}">  
             {{ channel['channel_name'] }}
           </a>
         </div>
