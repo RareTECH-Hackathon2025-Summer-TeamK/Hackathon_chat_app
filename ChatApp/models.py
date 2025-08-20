@@ -46,3 +46,39 @@ class User:
         finally:
             # 借りたコネクションを接続プールに返却（再利用可能にする）
             db_pool.release(conn)
+            
+# チャンネルクラス
+class Channel:
+
+    @classmethod
+    def get_all(cls):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM channels;"
+                cur.execute(sql)
+                # 変数channelsにデータベースのデータをリスト型で保管している
+                # cur.fetchallはリスト（list）の形式で返すメソッド
+                channels = cur.fetchall()
+                return channels
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def find_by_cid(cls, cid):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM channels WHERE channel_id=%s;"
+                cur.execute(sql, (cid,))
+                channel = cur.fetchone()
+                return channel
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+            

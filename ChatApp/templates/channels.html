@@ -11,26 +11,17 @@
       <div class="nav">
         <h1>チャンネル一覧</h1>
       </div>
-      <div class="box">
+
+      {% for channel in channels %}
+        <div class="box">
         <div class="item">
-            <p>トピックAが入ります</p>
-        </div>
-        <div class="item">
-            <p>トピックBが入ります</p>
-        </div>
-        <div class="item">
-            <p>トピックCが入ります</p>
-        </div>
-        <div class="item">
-            <p>トピックDが入ります</p>
-        </div>
-        <div class="item">
-            <p>トピックEが入ります</p>
-        </div>
-        <div class="item">
-            <p>トピックFが入ります</p>
+          <a href="{{ url_for('channels_view', cid=channel.channel_id) }}">
+            {{ channel['channel_name'] }}
+          </a>
         </div>
       </div>
+      {% endfor %}  
+
     </div>  
   </body>
 </html>

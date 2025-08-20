@@ -6,7 +6,7 @@ import os
 import hashlib
 from datetime import timedelta
 
-from models import User
+from models import User, Channel
 
 
 EMAIL_PATTERN = r"^[\w.+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]+$"
@@ -98,7 +98,13 @@ def channels_view():
     uid = session.get('user_id')
     if uid is None:
         return redirect(url_for('login_view'))
-    return render_template('channels.html')
+    
+    email = session["email"]
+    user = User.find_by_email(email)
+    channels = Channel.get_all()
+    return render_template('channels.html', channels=channels, user=user)
+
+
 
 if __name__ =='__main__':
     app.run(host="0.0.0.0", debug=True,) 
