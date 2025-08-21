@@ -59,11 +59,19 @@
 
     <footer>
       <form class="message-form" method="POST" action="{{ url_for('create_message', cid=channel.channel_id) }}">
-        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form">
+        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form" maxlength="300">
         <button type="submit" class="btn" id="form-btn">
           <img src="{{ url_for('static', filename='img/paper_airplane.png') }}" alt="送信">
         </button>
       </form>
+
+      <script>
+        document.querySelector('.message-form').addEventListener('submit', function(e) {
+          alert("文字数制限（300文字）を超過しました。\n300文字以内でメッセージを作成してください。");
+          e.preventDefault(); // フォーム送信を中止する
+        });
+      </script>
+
     </footer>
   </div>
 </body>
