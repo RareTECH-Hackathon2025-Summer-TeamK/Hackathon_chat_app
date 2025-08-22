@@ -1,12 +1,12 @@
 #モジュールのインポート
-from flask import Flask, render_template, session, request, redirect, url_for, flash
+from flask import Flask, render_template, session, request, redirect, url_for, flash, abort
 import uuid
 import re
 import os
 import hashlib
 from datetime import timedelta
 
-from models import User
+from models import User, Channel, Message
 
 
 EMAIL_PATTERN = r"^[\w.+-]+@[A-Za-z0-9-]+\.[A-Za-z0-9.-]+$"
@@ -52,7 +52,7 @@ def signup_process():
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(user_id, user_name, email,password)
+            User.create(user_id, user_name, email, password)
             user_id = str(user_id)
             session['user_id'] = user_id
             return redirect(url_for('channels_view'))
@@ -81,6 +81,7 @@ def login_process():
                 flash('パスワードが間違っています')
             else:
                 session['user_id'] = user["user_id"]
+                session['email'] = user["email"]
                 return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
@@ -91,7 +92,70 @@ def logout():
     session.clear()
     return redirect(url_for("login_view"))
 
+## チャンネル一覧ページの表示   
+@app.route('/channels', methods =['GET'])
+def channels_view(): 
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    email = session["email"]
+    user = User.find_by_email(email)
+    channels = Channel.get_all()
+    return render_template('channels.html', channels=channels, user=user)
 
+## チャンネル個別ページの表示
+@app.route('/channels/<int:cid>/messages', methods=['GET'])
+def messages(cid):
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    channel = Channel.find_by_cid(cid)
+    if channel is None:
+        abort(404) # チャンネルが存在しない場合は404エラー
+    messages = Message.get_all(cid)
+    return render_template('messages.html', uid=uid, channel=channel, messages=messages)
+
+# メッセージの投稿
+@app.route('/channels/<int:cid>/messages', methods=['POST'])
+def create_message(cid):
+    user_id = session.get('user_id')
+    message = request.form.get('create_message')
+    Message.create(user_id, cid, message)
+    return redirect(url_for('messages', cid=cid))
+
+# メッセージの削除
+@app.route('/channels/<int:cid>/messages/<int:message_id>', methods=['POST'])
+def delete_message(cid, message_id):
+    user_id = session.get('user_id')
+    message = Message.find_by_id(message_id)
+    
+    if message and message['user_id'] == user_id:
+        Message.delete(message_id)
+        
+    return redirect(url_for('messages', cid=cid)) 
+
+# メッセージの編集
+@app.route('/channels/<int:cid>/messages/<int:message_id>/edit', methods=['POST'])
+def edit_message(cid, message_id):
+    user_id = session.get('user_id')
+    message = Message.find_by_id(message_id)
+    new_content = request.form.get('edit_message')
+
+    if message and message['user_id'] == user_id:
+        Message.update(message_id, new_content)
+
+    return redirect(url_for('messages', cid=cid)) 
+
+# 404エラー
+@app.errorhandler(404)
+def page_notfound(error):
+    return render_template('error/404.html'),404
+
+# 500エラー
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error/500.html'),500
 
 if __name__ =='__main__':
     app.run(host="0.0.0.0", debug=True,) 

@@ -1,36 +1,69 @@
 <!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <title>chatroom</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="チャットルーム">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style_3.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <div class="nav">
-        <h1>＜ トピック名</h1>
-      </div>
-      <div class="message-area">
-        <div class="my-messages">
-            <p class="my-message-box">もうすぐ夏休みが終わり</p>
-        </div>
-        <dev class="messages">
-            <p class="user-name">user-name</p>
-            <p class="user-massages-box">来週、海に行く！！</p>
-        </dev>
-        <div class="text-input-area">
-            <div class="text-input-box">
-                <textarea name="message" id="message" cols="30" maxlength="300" placeholder="メッセージを入力"></textarea>
-                <button id="add-message-button" type="submit" >
-                    <ion-icon name="paper-plane-sharp"></ion-icon>
-                    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-                    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-                </button>
+<html lang="ja"> <!-- 使用する言語は「日本語」-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='messages_page.css') }}"> <!-- CSSの適用 -->
+    <title>こもれび-Messages</title>
+</head>
+
+<body>
+  <div class="content">
+    <header>
+      <h1><a href="{{ url_for('channels_view') }}" style="text-decoration: none;">＜{{channel.channel_name}}</a></h1>
+      <!-- text-decoration: none;でリンク部分の下線を見えないようにする -->
+    </header>
+
+    <main>
+      {% for message in messages %}
+      <div class="message-wrapper">
+        {% if message.user_id == uid %}
+          <!-- チェックボックスをwrapperの直下に配置 -->
+          <input type="checkbox" id="edit-toggle-{{ message.message_id }}" class="edit-toggle-checkbox" style="display: none;">
+        {% endif %}
+
+        <div class="message{% if message.user_id == uid %} own-message{% endif %}">
+          <!-- ユーザー名 -->
+          <p id="messege-name">{{ message.user_name }}</p>
+          <!-- メッセージ内容 -->
+          <p>{{message.message_content}}</p>
+
+          {% if message.user_id == uid %}
+            <div class="message-actions">
+              <!-- 編集ボタン(label) -->
+              <label for="edit-toggle-{{ message.message_id }}" class="message-btn">
+                <img src="{{ url_for('static', filename='img/pen.png') }}" alt="編集">
+              </label>
+              <!-- メッセージ削除ボタン -->
+              <form method="POST" action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}" class="delete-form">
+                  <button type="submit" class="message-btn">
+                    <img src="{{ url_for('static', filename='img/trash.png') }}" alt="削除">
+                  </button>
+              </form>
             </div>
+          {% endif %}
         </div>
+
+        {% if message.user_id == uid %}
+        <!-- メッセージ編集フォーム -->
+        <div id="edit-form-{{ message.message_id }}" class="edit-form">
+            <form method="POST" action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}/edit">
+              <input type="text" name="edit_message" value="{{ message.message_content }}">
+              <button type="submit">保存</button>
+            </form>
+        </div>
+        {% endif %}
       </div>
-    </div>  
-  </body>
-</html>
+      {% endfor %}
+    </main> 
+
+    <footer>
+      <form class="message-form" method="POST" action="{{ url_for('create_message', cid=channel.channel_id) }}">
+        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form">
+        <button type="submit" class="btn" id="form-btn">
+          <img src="{{ url_for('static', filename='img/paper_airplane.png') }}" alt="送信">
+        </button>
+      </form>
+    </footer>
+  </div>
+</body>
