@@ -8,6 +8,15 @@
 </head>
 
 <body>
+
+  <dialog id = "alert-dialog">
+      <p>文字数制限（300文字）を超過しました</p>
+      <p>300文字以内でメッセージを作成してください</p>
+      <form method="dialog">
+        <button>Close</button>
+      </form>
+  </dialog>
+
   <div class="content">
     <header>
       <h1><a href="{{ url_for('channels_view') }}" style="text-decoration: none;">＜{{channel.channel_name}}</a></h1>
@@ -67,8 +76,11 @@
 
       <script>
         document.querySelector('.message-form').addEventListener('submit', function(e) {
-          alert("文字数制限（300文字）を超過しました。\n300文字以内でメッセージを作成してください。");
-          e.preventDefault(); // フォーム送信を中止する
+          var input = document.getElementById('form');
+          if (input.value.length >= 300) {
+            document.querySelector('#alert-dialog').showModal();
+            e.preventDefault(); // 送信中止
+          }
         });
       </script>
 
