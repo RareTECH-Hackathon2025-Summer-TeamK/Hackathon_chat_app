@@ -105,10 +105,10 @@ class Message:
         try:
             with conn.cursor() as cur:
                 sql = """
-                    SELECT message_id, u.user_id, user_name, message_content
+                    SELECT message_id, u.user_id, user_name, message_content, m.created_at
                     FROM messages AS m 
                     INNER JOIN users AS u ON m.user_id = u.user_id
-                    WHERE channel_id = %s 
+                    WHERE channel_id = %s AND m.created_at > NOW() - INTERVAL 10 MINUTE
                     ORDER BY message_id ASC;
                 """
                 cur.execute(sql, (cid,))
