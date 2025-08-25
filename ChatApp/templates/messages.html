@@ -8,6 +8,15 @@
 </head>
 
 <body>
+
+  <dialog id = "alert-dialog">
+      <p>文字数制限（300文字）を超過しました</p>
+      <p>300文字以内でメッセージを作成してください</p>
+      <form method="dialog">
+        <button>Close</button>
+      </form>
+  </dialog>
+
   <div class="content">
     <header>
       <h1><a href="{{ url_for('channels_view') }}" style="text-decoration: none;">＜{{channel.channel_name}}</a></h1>
@@ -59,11 +68,28 @@
 
     <footer>
       <form class="message-form" method="POST" action="{{ url_for('create_message', cid=channel.channel_id) }}">
-        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form">
+        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form" maxlength="300">
         <button type="submit" class="btn" id="form-btn">
           <img src="{{ url_for('static', filename='img/paper_airplane.png') }}" alt="送信">
         </button>
       </form>
+
+      <script>
+        document.querySelector('.message-form').addEventListener('submit', function(e) {
+          var input = document.getElementById('form');
+          if (input.value.length >= 300) {
+            document.querySelector('#alert-dialog').showModal();
+            e.preventDefault(); // 送信中止
+          }
+        });
+      </script>
+
     </footer>
   </div>
+  <script>
+    // 10分（600000ミリ秒）ごとにページをリロードします。
+    setTimeout(function() {
+      location.reload();
+    }, 600000);
+  </script>
 </body>
