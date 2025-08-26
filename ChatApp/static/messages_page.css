@@ -24,7 +24,7 @@ main {
   /* .content 要素の最大の横幅 */
   max-width: 415px; 
   /* .content 要素の最大の縦幅 */
-  max-height: 874px;
+  max-height: 915px;
   /* 上下の外側の余白を0、左右の余白を自動に設定して中央揃え */
   margin: 0 auto;
   /* 内側の余白を32pxに設定 */
@@ -183,4 +183,12 @@ footer {
 /* チェックボックスがONの時、後続の.edit-form要素を表示する */
 .edit-toggle-checkbox:checked ~ .edit-form {
   display: block;
+}
+
+
+#exit img {
+     width: 25px;
+     height: 25px;
+     margin: 50px 10px 10px;
+     float: right;
 }

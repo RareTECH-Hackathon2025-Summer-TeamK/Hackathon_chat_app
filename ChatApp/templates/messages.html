@@ -19,6 +19,7 @@
 
   <div class="content">
     <header>
+      <a href="{{ url_for('logout') }}" id="exit"><img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト"></a>
       <h1><a href="{{ url_for('channels_view') }}" style="text-decoration: none;">＜{{channel.channel_name}}</a></h1>
       <!-- text-decoration: none;でリンク部分の下線を見えないようにする -->
     </header>
