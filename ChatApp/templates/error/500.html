@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='error_style.css') }}">
-    <title>こもれび-500</title>
-</head>
-<body>
-    <div class="content">
-        <h1 class="error_message">500</h1>
-        <p>Internal Server Error</p>
-    </div>
-</body>
-</html>
+<!-- base.htmlの読み込み -->
+{% extends "base.html" %}
+
+<!-- CSSの適用 -->
+{% block css_style %}
+  {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='error_style.css') }}">
+{% endblock %}
+
+<!-- ページタイトルの反映 -->
+{% block title %}Komorebi-500{% endblock %}
+
+<!-- コンテンツの反映 -->
+{% block body_content %}
+  <div class="content">
+    <h1 class="error_message">500</h1>
+      <p>Internal Server Error</p>
+    <a href="{{ url_for('index') }}">
+      TOPページへ戻る
+    </a>
+  </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+.title-logo {
+  max-width: 100%;
+  margin:  75px 0px 75px;
+}
+
+input {
+  border: none;
+  border-bottom: 2px solid;
+  outline: none;
+  padding: 5px 0;
+  width: 100%;
+}
+
+.btn {
+  /* 丸角 */
+  border-radius: 20px;
+  /* ボーダー色の色指定 */
+  border-color: #D9D9D9;
+  /* フォントサイズ */
+  font-size: 16px;
+  /* 内側の余白 */
+  padding: 6px;
+  /* 外側の余白 */
+  margin: 53px 20px 20px;
+  /* ボタンの横幅の設定 */
+  width: 200px;
+  /* ボタンの縦幅の設定 */
+  height: 50px;
+}
+
+.btn:hover {
+  /* 文字を太字にする */
+  font-weight: bold;
+  /* ボタンサイズを大きくする */
+  transform: scale(1.05);
+  /* アニメーションの速度調整 */
+  transition: all 0.3s ease;
+}
+
+#login-btn {
+  /* 背景色 */
+  background-color: #A4DD00;
+  /* 文字色 */
+  color: #ffffff;
+}
+
+#signup-btn {
+  /* 背景色 */
+  background-color: #ffffff;
+  /* 文字色 */
+  color: #666464;
+}
+
+.form-text {
+  display: block;
+  text-align: left;
+}

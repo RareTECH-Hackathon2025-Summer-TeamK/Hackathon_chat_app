@@ -86,7 +86,6 @@ def login_process():
                 return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
-
 #ログアウト方法
 @app.route("/logout", methods =["GET"])
 def logout():
