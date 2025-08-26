@@ -105,7 +105,7 @@ def channels_view():
     return render_template('channels.html', channels=channels, user=user)
 
 ##チャンネル作成
-@app.route('/admin/channels', methods ='POST')
+@app.route('/admin/channels', methods=['POST'])
 def create_channel():
     user_id = session.get('user_id')
     if user_id is None:
@@ -121,7 +121,7 @@ def create_channel():
         return render_template('error/error.html', error_message=error)
 
 ##チャンネル編集
-@app.route('/admin/channels/update/<cid>', methosa=['POST'])
+@app.route('/admin/channels/update/<cid>', methods=['POST'])
 def update_channel(cid):
     user_id = session.get('user_name')
     if user_id is None:
