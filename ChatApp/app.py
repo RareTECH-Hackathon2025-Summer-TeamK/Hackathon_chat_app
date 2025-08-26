@@ -83,7 +83,10 @@ def login_process():
             else:
                 session['user_id'] = user["user_id"]
                 session['email'] = user["email"]
-                return redirect(url_for('channels_view'))
+                if user.get('is_admin'):
+                    return redirect(url_for('edit_channels_view'))  
+                else:
+                    return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
 #ログアウト方法
@@ -103,6 +106,21 @@ def channels_view():
     user = User.find_by_email(email)
     channels = Channel.get_all()
     return render_template('channels.html', channels=channels, user=user)
+
+## チャンネル編集ページの表示（管理者ユーザーのみ）  
+@app.route('/admin/channels', methods=['GET'])
+def edit_channels_view():
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    email = session["email"]
+    user = User.find_by_email(email)
+    
+    if not user.get('is_admin'):
+        return redirect(url_for('channels_view'))
+    channels = Channel.get_all()
+    return render_template('admin/channels/edit_channels.html', channels=channels, user=user)
 
 ##チャンネル作成
 @app.route('/admin/channels', methods=['POST'])
