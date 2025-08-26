@@ -168,11 +168,18 @@ def update_channel(cid):
 ## チャンネルの削除（管理者ユーザーのみ）  
 @app.route('/admin/channels/<cid>', methods=['POST'])
 def delete_channel(cid):
-    user_id = session.get('user_id')
-    channel = Channel.find_by_cid(cid)
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
     
-    if channel and channel['user_id'] == user_id:
-        channel.delete(channel)
+    email = session["email"]
+    user = User.find_by_email(email)
+    
+    if not user.get('is_admin'):
+        return redirect(url_for('channels_view'))
+
+    Channel.delete(cid)
+    return redirect(url_for('edit_channels_view'))
 
 ## チャンネル個別ページの表示
 @app.route('/channels/<cid>/messages', methods=['GET'])

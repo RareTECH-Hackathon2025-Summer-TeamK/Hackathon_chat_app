@@ -125,6 +125,20 @@ class Channel:
         finally:
             db_pool.release(conn)
 
+    @classmethod
+    def delete(cls, cid):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "DELETE FROM channels WHERE channel_id=%s;"
+                cur.execute(sql, (cid,))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
 
 # メッセージクラス
 class Message:
