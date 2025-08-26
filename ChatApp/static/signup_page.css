@@ -50,7 +50,7 @@ input {
   /* 内側の余白 */
   padding: 6px;
   /* 外側の余白 */
-  margin: 53px 20px;
+  margin: 53px 20px 20px;
   /* ボタンの横幅の設定 */
   width: 200px;
   /* ボタンの縦幅の設定 */
