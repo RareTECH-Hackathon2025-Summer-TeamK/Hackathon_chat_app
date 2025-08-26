@@ -1,43 +1,6 @@
-body {
-  /* 外側の余白 */
-  margin: 0;
-  /* 内側の余白 */
-  padding: 0;
-}
-
 .content {
-  /* .content 要素の最大の横幅 */
-  max-width: 415px; 
-  /* .content 要素の最大の縦幅 */
-  max-height: 874px;
-  /* 外側の余白 */
-  margin: 0 auto;
-  /* 内側の余白 */
-  padding: 32px;
-  /* 枠線 */
-  border: 1px solid black;
-  /* コンテンツを中央寄りにする */
-  text-align: center;
-  /* コンテンツを表示する高さを画面の高さ100%で表示する */
-  height: 100vh;
   /* 背景色 */
   background-color: #ffffff;
-}
-
-@media screen and (max-width: 415px) {
-  .content {
-    /*親要素（bodyの100%まで）*/
-    max-width: 100%;
-    /* 外側の余白 */
-    margin: 0 auto;
-    /* 内側の余白 */
-    padding: 32px 16px;
-    /* 背景色 */
-    background-color: #ffffff;
-    /* widthとheightにpaddingやborderのサイズを含むようにする */
-    /* 要素が画面からはみ出ないようにする */
-    box-sizing: border-box;
-  }
 }
 
 .error_message {
