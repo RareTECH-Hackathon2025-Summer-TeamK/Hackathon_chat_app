@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja"> <!-- 使用する言語は「日本語」-->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}"> <!-- CSSの適用 -->
-    <title>こもれび-SignUp</title>
-</head>
+<!-- base.htmlの読み込み -->
+{% extends "base.html" %}
 
-<body>
+<!-- CSSの適用 -->
+{% block css_style %}
+    {{ super() }} <!-- 継承元のCSSを保持 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}">
+{% endblock %}
+
+<!-- ページタイトルの反映 -->
+{% block title %}Komorebi-Signup{% endblock %}
+
+<!-- コンテンツの反映 -->
+{% block body_content %}
     <div class="content">
         <img src="static/img/title-logo.png" class="title-logo">
         <form method="post">
@@ -42,5 +46,4 @@
             <a href="{{ url_for('login_view') }}">ログインはこちら</a>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}

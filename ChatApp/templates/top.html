@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja"> <!-- 使用する言語は「日本語」-->
+<!-- base.htmlの読み込み -->
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='top_page.css') }}"> <!-- CSSの適用 -->
-    <title>こもれび-Top</title>
-</head>
+<!-- CSSの適用 -->
+{% block css_style %}
+    {{ super() }} <!-- 継承元のCSSを保持 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='top_page.css') }}">
+{% endblock %}
 
-<body>
+<!-- ページタイトルの反映 -->
+{% block title %}Komorebi-TOP{% endblock %}
+
+<!-- コンテンツの反映 -->
+{% block body_content %}
     <div class="content">
         <img src="static/img/title-logo.png" class="title-logo">
         <section>
@@ -22,6 +25,4 @@
             </a>
         </section>
     </div>
-</body>
-
-</html>
+{% endblock %}
