@@ -4,7 +4,7 @@
 <!-- CSSの適用 -->
 {% block css_style %}
   {{ super() }} <!-- 継承元のCSSを保持 -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style_2.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='channels.css') }}">
 {% endblock %}
 
 <!-- ページタイトルの反映 -->
@@ -12,16 +12,17 @@
 
 <!-- コンテンツの反映 -->
 {% block body_content %}
-  <div class="container">
-    <div class="nav">
+  <div class="content">
+
+    <header>
       <a href="{{ url_for('logout') }}" id="exit"><img src="static/img/exit.png"></a>
       <h1>チャンネル一覧</h1>
-    </div>
+    </header>
 
     {% for channel in channels %}
       <div class="box">
       <div class="item">
-        <a href="{{ url_for('messages', cid=channel.channel_id) }}">  
+        <a href="{{ url_for('messages', cid=channel.channel_id) }}" style="text-decoration: none;">  
           {{ channel['channel_name'] }}
         </a>
       </div>

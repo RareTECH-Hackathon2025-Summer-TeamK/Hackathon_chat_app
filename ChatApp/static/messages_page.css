@@ -4,6 +4,10 @@ header {
   border-bottom: 2px solid #A4DD00;
 }
 
+header a {
+  color: inherit;
+}
+
 /* main要素 */
 main {
   flex: 1;
