@@ -1,6 +1,7 @@
 from flask import abort
 import pymysql
 from util.DB import DB
+import uuid
 
 db_pool =DB.init_db_pool()
 
@@ -49,6 +50,35 @@ class User:
             
 # チャンネルクラス
 class Channel:
+    @classmethod
+    def find_by_name(cls, channel_name):
+        conn =db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM channels WHERE channel_name =%s LIMIT 1;"
+                cur.execute(sql, (channel_name,))
+                return cur.fetchone()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def create(cls, channel_name):
+        channel_id = uuid.uuid4()
+        conn =db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "INSERT INTO channels (channel_id, channel_name ) VALUES(%s, %s);"
+                cur.execute(sql, (channel_id, channel_name))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
 
     @classmethod
     def get_all(cls):
@@ -81,6 +111,21 @@ class Channel:
             abort(500)
         finally:
             db_pool.release(conn)
+
+    @classmethod
+    def update(cls, cid, channel_name):
+        conn = db_pool.get_conn()
+        try:
+           with conn.cursor() as cur:
+               sql = "UPDATE channels SET channel_name=%s, updated_at=NOW() WHERE channel_id=%s;"
+               cur.execute(sql, (channel_name, cid))
+               conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+           db_pool.release(conn)
+
 
 # メッセージクラス
 class Message:

@@ -55,6 +55,7 @@ def signup_process():
             User.create(user_id, user_name, email, password)
             user_id = str(user_id)
             session['user_id'] = user_id
+            session['email'] = email
             return redirect(url_for('channels_view'))
     return redirect(url_for('signup_view'))
 
@@ -104,8 +105,36 @@ def channels_view():
     channels = Channel.get_all()
     return render_template('channels.html', channels=channels, user=user)
 
+##チャンネル作成
+@app.route('/admin/channels', methods ='POST')
+def create_channel():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_view'))
+    
+    channel_name = request.form.get('channelTitle')
+    channel = Channel.find_by_name(channel_name)
+    if channel == None:
+        Channel.create(channel_name)
+        return redirect(url_for('channels_view'))
+    else:
+        error = '既に同じ名前のチャンネルが存在しています'
+        return render_template('error/error.html', error_message=error)
+
+##チャンネル編集
+@app.route('/admin/channels/update/<cid>', methosa=['POST'])
+def update_channel(cid):
+    user_id = session.get('user_name')
+    if user_id is None:
+        return redirect(url_for('login_view'))
+    
+    channel_name = request.form.get('channelTitle')
+
+    Channel.update(cid, channel_name,)
+    return redirect(f'/channels/{cid}/messages')
+
 ## チャンネル個別ページの表示
-@app.route('/channels/<int:cid>/messages', methods=['GET'])
+@app.route('/channels/<cid>/messages', methods=['GET'])
 def messages(cid):
     uid = session.get('user_id')
     if uid is None:
