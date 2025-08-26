@@ -105,7 +105,7 @@ def channels_view():
     email = session["email"]
     user = User.find_by_email(email)
     channels = Channel.get_all()
-    return render_template('channels.html', channels=channels, user=user)
+    return render_template('create_channel.html', channels=channels, user=user)
 
 ## チャンネル編集ページの表示（管理者ユーザーのみ）  
 @app.route('/admin/channels', methods=['GET'])
@@ -122,7 +122,22 @@ def edit_channels_view():
     channels = Channel.get_all()
     return render_template('admin/channels/edit_channels.html', channels=channels, user=user)
 
-##チャンネル作成
+##チャンネル作成ページの表示（管理者ユーザーのみ）
+@app.route('/admin/channels/create', methods=['GET'])
+def create_channel_view():
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    email = session["email"]
+    user = User.find_by_email(email)
+    
+    if not user.get('is_admin'):
+        return redirect(url_for('channels_view'))
+    channels = Channel.get_all()
+    return render_template('admin/channels/create_channel.html', channels=channels, user=user)
+
+##チャンネル作成（管理者ユーザーのみ） 
 @app.route('/admin/channels', methods=['POST'])
 def create_channel():
     user_id = session.get('user_id')
@@ -133,12 +148,12 @@ def create_channel():
     channel = Channel.find_by_name(channel_name)
     if channel == None:
         Channel.create(channel_name)
-        return redirect(url_for('channels_view'))
+        return redirect(url_for('edit_channels_view'))
     else:
         error = '既に同じ名前のチャンネルが存在しています'
         return render_template('error/error.html', error_message=error)
 
-##チャンネル編集
+##チャンネル編集（管理者ユーザーのみ） 
 @app.route('/admin/channels/update/<cid>', methods=['POST'])
 def update_channel(cid):
     user_id = session.get('user_name')
@@ -149,6 +164,15 @@ def update_channel(cid):
 
     Channel.update(cid, channel_name,)
     return redirect(f'/channels/{cid}/messages')
+
+## チャンネルの削除（管理者ユーザーのみ）  
+@app.route('/admin/channels/<cid>', methods=['POST'])
+def delete_channel(cid):
+    user_id = session.get('user_id')
+    channel = Channel.find_by_cid(cid)
+    
+    if channel and channel['user_id'] == user_id:
+        channel.delete(channel)
 
 ## チャンネル個別ページの表示
 @app.route('/channels/<cid>/messages', methods=['GET'])

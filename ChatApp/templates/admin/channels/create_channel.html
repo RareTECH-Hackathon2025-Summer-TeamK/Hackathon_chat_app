@@ -13,18 +13,21 @@
         <h1>チャンネル作成</h1>
       </div>
       <div class="create">
-        <p class="title">チャンネル名</p>
-        <div>
-         <input 
-          type="text" 
-          class="channel-input"  
-          placeholder=""
-          />
-        </div>
-        <p class="notice">※20文字以内に設定してください</p>
-        <div>
-          <button class="cre_btn">作成</button>
-        </div>
+        <form action="/admin/channels" method="POST">
+          <p class="title">チャンネル名</p>
+          <div>
+          <input 
+            type="text" 
+            class="channel-input"  
+            placeholder=""
+            name="channelTitle"
+            />
+          </div>
+          <p class="notice">※20文字以内に設定してください</p>
+          <div>
+            <button class="cre_btn">作成</button>
+          </div>
+        </form>
       </div>
     </div>  
   </body>

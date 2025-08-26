@@ -79,7 +79,6 @@ class Channel:
         finally:
             db_pool.release(conn)
 
-
     @classmethod
     def get_all(cls):
         conn = db_pool.get_conn()
@@ -116,15 +115,15 @@ class Channel:
     def update(cls, cid, channel_name):
         conn = db_pool.get_conn()
         try:
-           with conn.cursor() as cur:
-               sql = "UPDATE channels SET channel_name=%s, updated_at=NOW() WHERE channel_id=%s;"
-               cur.execute(sql, (channel_name, cid))
-               conn.commit()
+            with conn.cursor() as cur:
+                sql = "UPDATE channels SET channel_name=%s, updated_at=NOW() WHERE channel_id=%s;"
+                cur.execute(sql, (channel_name, cid))
+                conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
             abort(500)
         finally:
-           db_pool.release(conn)
+            db_pool.release(conn)
 
 
 # メッセージクラス
