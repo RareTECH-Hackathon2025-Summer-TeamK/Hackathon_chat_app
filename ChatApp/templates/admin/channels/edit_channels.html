@@ -1,39 +1,35 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8">
-    <title>edit_channels</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="チャンネル編集ページ">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style_3.css') }}">
-  </head>
-   <body>
-    <div class="container">
-      <div class="nav">
-        <h1>チャンネル編集</h1>
-      </div>
+<!-- base.htmlの読み込み -->
+{% extends "base.html" %}
+
+<!-- CSSの適用 -->
+{% block css_style %}
+  {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='channels-css.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='edit-channels.css') }}">
+{% endblock %}
+
+<!-- ページタイトルの反映 -->
+{% block title %}Komorebi-TOP{% endblock %}
+
+<!-- コンテンツの反映 -->
+{% block body_content %}
+  <div class="content">
+
+    <header>
+      <a href="{{ url_for('logout') }}" id="exit"><img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト"></a>
+      <h1>チャンネル編集</h1>
+    </header>
+
+    <main>
+      {% for channel in channels %}
       <div class="edit_channels">
         <div class="channel">
-            <p class="channel_name">チャンネル名が入ります。</p>
-            <button class="del_btn">削除</button>
-        </div>
-        <div class="channel">
-            <p class="channel_name">チャンネル名が入ります。</p>
-            <button class="del_btn">削除</button>
-        </div>
-        <div class="channel">
-            <p class="channel_name">チャンネル名が入ります。</p>
-            <button class="del_btn">削除</button>
-        </div>
-        <div class="channel">
-            <p class="channel_name">チャンネル名が入ります。</p>
-            <button class="del_btn">削除</button>
-        </div>
-        <div class="channel">
-            <p class="channel_name">チャンネル名が入ります。</p>
+            <p class="channel_name">{{ channel['channel_name'] }}</p>
             <button class="del_btn">削除</button>
         </div>
       </div>
+      {% endfor %}  
+
       <div class="add-channel">
         <button class="add_btn" type="submit" >
             <ion-icon name="add-outline" ></ion-icon> 
@@ -41,5 +37,7 @@
             <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script> 
         </button>
       </div>
-    </div>  
-  </body>
+    </main>
+
+  </div>  
+{% endblock %}

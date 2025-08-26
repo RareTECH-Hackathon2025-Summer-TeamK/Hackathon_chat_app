@@ -83,7 +83,10 @@ def login_process():
             else:
                 session['user_id'] = user["user_id"]
                 session['email'] = user["email"]
-                return redirect(url_for('channels_view'))
+                if user.get('is_admin'):
+                    return redirect(url_for('edit_channels_view'))  
+                else: 
+                    return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
 
 #ログアウト方法
@@ -104,8 +107,64 @@ def channels_view():
     channels = Channel.get_all()
     return render_template('channels.html', channels=channels, user=user)
 
+
+##チャンネル作成（管理者ユーザーのみ）  
+@app.route('/admin/channels', methods ='POST')
+def create_channel():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect(url_for('login_view'))
+    
+    channel_name = request.form.get('channelTitle')
+    channel = Channel.find_by_name(channel_name)
+    if channel == None:
+        Channel.create(channel_name)
+        return redirect(url_for('channels_view'))
+    else:
+        error = '既に同じ名前のチャンネルが存在しています'
+        return render_template('error/error.html', error_message=error)
+
+##チャンネル編集（管理者ユーザーのみ）  
+@app.route('/admin/channels/update/<cid>', methosa=['POST'])
+def update_channel(cid):
+    user_id = session.get('user_name')
+    if user_id is None:
+        return redirect(url_for('login_view'))
+    
+    channel_name = request.form.get('channelTitle')
+
+    Channel.update(cid, channel_name,)
+    return redirect(f'/channels/{cid}/messages')
+
+
+## チャンネル編集ページの表示（管理者ユーザーのみ）  
+@app.route('/admin/channels', methods=['GET'])
+def edit_channels_view():
+    uid = session.get('user_id')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    email = session["email"]
+    user = User.find_by_email(email)
+    
+    if not user.get('is_admin'):
+        return redirect(url_for('channels_view'))
+    channels = Channel.get_all()
+    return render_template('admin/channels/edit_channels.html', channels=channels, user=user)
+
+## チャンネルの削除（管理者ユーザーのみ）  
+@app.route('/admin/channels/<cid>', methods=['POST'])
+def delete_channel(cid):
+    user_id = session.get('user_id')
+    channel = Channel.find_by_cid(cid)
+    
+    if channel and channel['user_id'] == user_id:
+        channel.delete(channel)
+        
+    return redirect(url_for('edit_channels_view', cid=cid)) 
+
 ## チャンネル個別ページの表示
-@app.route('/channels/<int:cid>/messages', methods=['GET'])
+@app.route('/channels/<cid>/messages', methods=['GET'])
 def messages(cid):
     uid = session.get('user_id')
     if uid is None:
@@ -117,7 +176,7 @@ def messages(cid):
     return render_template('messages.html', uid=uid, channel=channel, messages=messages)
 
 # メッセージの投稿
-@app.route('/channels/<int:cid>/messages', methods=['POST'])
+@app.route('/channels/<cid>/messages', methods=['POST'])
 def create_message(cid):
     user_id = session.get('user_id')
     message = request.form.get('create_message')
@@ -125,7 +184,7 @@ def create_message(cid):
     return redirect(url_for('messages', cid=cid))
 
 # メッセージの削除
-@app.route('/channels/<int:cid>/messages/<int:message_id>', methods=['POST'])
+@app.route('/channels/<cid>/messages/<int:message_id>', methods=['POST'])
 def delete_message(cid, message_id):
     user_id = session.get('user_id')
     message = Message.find_by_id(message_id)
@@ -136,7 +195,7 @@ def delete_message(cid, message_id):
     return redirect(url_for('messages', cid=cid)) 
 
 # メッセージの編集
-@app.route('/channels/<int:cid>/messages/<int:message_id>/edit', methods=['POST'])
+@app.route('/channels/<cid>/messages/<int:message_id>/edit', methods=['POST'])
 def edit_message(cid, message_id):
     user_id = session.get('user_id')
     message = Message.find_by_id(message_id)

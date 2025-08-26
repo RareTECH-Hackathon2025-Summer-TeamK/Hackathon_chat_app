@@ -38,4 +38,5 @@ CREATE TABLE messages (
 INSERT INTO users(user_id, is_admin, user_name, email, password) VALUES('970af84c-dd40-47ff-af23-282b72b7cca8', 1, 'admin', 'test@gmail.com', '37268335dd6931045bdcdf92623ff819a64244b53d0e');
 INSERT INTO users(user_id, is_admin, user_name, email, password) VALUES('970af84c-dd40-47ff-af23-282b72b7cca9', 1, 'admin2', 'test2@gmail.com', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8');
 INSERT INTO channels(channel_id, channel_name) VALUES('1', 'Bookroom');
+INSERT INTO channels(channel_id, channel_name) VALUES('2', 'Playroom');
 INSERT INTO messages(message_id, message_content, user_id, channel_id) VALUES('1', 'Shall we talk about books with me? ', '970af84c-dd40-47ff-af23-282b72b7cca8', '1');

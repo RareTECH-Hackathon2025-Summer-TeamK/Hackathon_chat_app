@@ -4,6 +4,7 @@
 <!-- CSS の適用 -->
 {% block css_style %}
   {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='channels-css.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='messages_page.css') }}">
 {% endblock %}
 

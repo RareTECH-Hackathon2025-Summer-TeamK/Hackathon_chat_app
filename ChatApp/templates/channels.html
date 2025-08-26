@@ -4,6 +4,7 @@
 <!-- CSSの適用 -->
 {% block css_style %}
   {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='channels-css.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='channels.css') }}">
 {% endblock %}
 
@@ -15,18 +16,18 @@
   <div class="content">
 
     <header>
-      <a href="{{ url_for('logout') }}" id="exit"><img src="static/img/exit.png"></a>
+      <a href="{{ url_for('logout') }}" id="exit"><img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト"></a>
       <h1>チャンネル一覧</h1>
     </header>
 
     {% for channel in channels %}
       <div class="box">
-      <div class="item">
-        <a href="{{ url_for('messages', cid=channel.channel_id) }}" style="text-decoration: none;">  
-          {{ channel['channel_name'] }}
-        </a>
+        <div class="item">
+          <a href="{{ url_for('messages', cid=channel.channel_id) }}" style="text-decoration: none;">  
+            {{ channel['channel_name'] }}
+          </a>
+        </div>
       </div>
-    </div>
     {% endfor %}  
 
   </div> 
