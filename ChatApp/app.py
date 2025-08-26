@@ -55,6 +55,7 @@ def signup_process():
             User.create(user_id, user_name, email, password)
             user_id = str(user_id)
             session['user_id'] = user_id
+            session['email'] = email
             return redirect(url_for('channels_view'))
     return redirect(url_for('signup_view'))
 
@@ -84,7 +85,6 @@ def login_process():
                 session['email'] = user["email"]
                 return redirect(url_for('channels_view'))
     return redirect(url_for('login_view'))
-
 
 #ログアウト方法
 @app.route("/logout", methods =["GET"])
