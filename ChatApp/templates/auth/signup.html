@@ -3,8 +3,8 @@
 
 <!-- CSSの適用 -->
 {% block css_style %}
-    {{ super() }} <!-- 継承元のCSSを保持 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}">
+  {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}">
 {% endblock %}
 
 <!-- ページタイトルの反映 -->
@@ -12,38 +12,38 @@
 
 <!-- コンテンツの反映 -->
 {% block body_content %}
-    <div class="content">
-        <img src="static/img/title-logo.png" class="title-logo">
-        <form method="post">
-            <section>
-                <label class="form-text">
-                    ニックネーム<br>
-                    <input type="text" name="user_name">
-                    <p>※20文字以内に設定してください</p>
-                </label>
+  <div class="content">
+    <img src="static/img/title-logo.png" class="title-logo">
+    <form method="post">
+      <section>
+        <label class="form-text">
+          ニックネーム<br>
+          <input type="text" name="user_name">
+          <p>※20文字以内に設定してください</p>
+        </label>
 
-                <label class="form-text">
-                    メールアドレス<br>
-                    <input type="email" name="email">
-                    <p>※50文字以内に設定してください</p>
-                </label>
+        <label class="form-text">
+          メールアドレス<br>
+          <input type="email" name="email">
+          <p>※50文字以内に設定してください</p>
+        </label>
 
-                <label class="form-text">
-                    パスワード<br>
-                    <input type="password" name="password">
-                    <p>※120文字以内に設定してください</p>
-                </label>
+        <label class="form-text">
+          パスワード<br>
+          <input type="password" name="password">
+          <p>※120文字以内に設定してください</p>
+        </label>
 
-                <label class="form-text">
-                    パスワード確認用<br>
-                    <input type="password" name="password-confirmation">
-                </label>
-            </section>
+        <label class="form-text">
+          パスワード確認用<br>
+          <input type="password" name="password-confirmation">
+        </label>
+      </section>
 
-            <section>
-                <button type="submit" class="btn" id="signup-btn">登録</button>
-            </section>
-            <a href="{{ url_for('login_view') }}">ログインはこちら</a>
-        </form>
-    </div>
+      <section>
+        <button type="submit" class="btn" id="signup-btn">登録</button>
+      </section>
+      <a href="{{ url_for('login_view') }}">ログインはこちら</a>
+    </form>
+  </div>
 {% endblock %}

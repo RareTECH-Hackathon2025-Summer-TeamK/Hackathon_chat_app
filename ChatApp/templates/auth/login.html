@@ -3,8 +3,8 @@
 
 <!-- CSSの適用 -->
 {% block css_style %}
-    {{ super() }} <!-- 継承元のCSSを保持 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='login_page.css') }}">
+  {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='login_page.css') }}">
 {% endblock %}
 
 <!-- ページタイトルの反映 -->
@@ -12,26 +12,26 @@
 
 <!-- コンテンツの反映 -->
 {% block body_content %}
-    <div class="content">
-        <img src="static/img/title-logo.png" class="title-logo">
-        <form method="post">
-            <section>
-                <label class="login-form-text">
-                    メールアドレス<br>
-                    <input type="email" name="email">
-                    <p>※50文字以内に設定してください</p>
-                </label>
+  <div class="content">
+    <img src="static/img/title-logo.png" class="title-logo">
+    <form method="post">
+      <section>
+        <label class="login-form-text">
+          メールアドレス<br>
+          <input type="email" name="email">
+          <p>※50文字以内に設定してください</p>
+        </label>
 
-                <label class="login-form-text">
-                    パスワード<br>
-                    <input type="password" name="password">
-                    <p>※120文字以内に設定してください</p>
-                </label>
-            </section>
-            <section>
-                <button type="submit" class="btn" id="login-btn">ログイン</button>
-            </section>
-            <a href="{{ url_for('signup_view') }}">新規登録はこちら</a>
-        </form>
-    </div>
+        <label class="login-form-text">
+          パスワード<br>
+          <input type="password" name="password">
+          <p>※120文字以内に設定してください</p>
+        </label>
+      </section>
+      <section>
+        <button type="submit" class="btn" id="login-btn">ログイン</button>
+      </section>
+      <a href="{{ url_for('signup_view') }}">新規登録はこちら</a>
+    </form>
+  </div>
 {% endblock %}

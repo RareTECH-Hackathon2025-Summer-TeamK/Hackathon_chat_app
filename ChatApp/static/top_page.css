@@ -1,29 +1,8 @@
-body {
-  /* 外側の余白 */
-  margin: 0;
-  /* 内側の余白 */
-  padding: 0;
-}
-
 .content {
-  /* .content 要素の最大の横幅 */
-  max-width: 415px; 
-  /* .content 要素の最大の縦幅 */
-  max-height: 915px;
-  /* 外側の余白 */
-  margin: 0 auto;
-  /* 内側の余白 */
-  padding: 32px;
   /* 背景画像の設定 */
   background-image: url(img/istockphoto-1203310959-1024x1024.jpg); 
   /* 画像を背景にフィットさせる */
   background-size: cover;
-  /* 枠線 */
-  border: 1px solid black;
-  /* コンテンツを中央寄りにする */
-  text-align: center;
-  /* コンテンツを表示する高さを画面の高さ100%で表示する */
-  height: 100vh;
 }
 
 .title-logo {
