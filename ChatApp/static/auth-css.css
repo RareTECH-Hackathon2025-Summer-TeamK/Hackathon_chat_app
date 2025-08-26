@@ -3,11 +3,6 @@
   margin:  75px 0px 75px;
 }
 
-.login-form-text {
-  display: block;
-  text-align: left;
-}
-
 input {
   border: none;
   border-bottom: 2px solid;
@@ -49,16 +44,14 @@ input {
   color: #ffffff;
 }
 
-@media screen and (max-width: 415px) {
-  .content {
-    /*親要素（bodyの100%まで）*/
-    max-width: 100%;
-    /* 外側の余白 */
-    margin: 0 auto;
-    /* 内側の余白 */
-    padding: 32px 16px;
-    /* widthとheightにpaddingやborderのサイズを含むようにする */
-    /* 要素が画面からはみ出ないようにする */
-    box-sizing: border-box;
-  }
+#signup-btn {
+  /* 背景色 */
+  background-color: #ffffff;
+  /* 文字色 */
+  color: #666464;
+}
+
+.form-text {
+  display: block;
+  text-align: left;
 }

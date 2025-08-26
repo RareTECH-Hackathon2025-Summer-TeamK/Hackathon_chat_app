@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="ja"> <!-- 使用する言語は「日本語」-->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマホ画面に対応させる-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='messages_page.css') }}"> <!-- CSSの適用 -->
-    <title>こもれび-Messages</title>
-</head>
+<!-- base.htmlの読み込み -->
+{% extends "base.html" %}
 
-<body>
+<!-- CSSの適用 -->
+{% block css_style %}
+  {{ super() }} <!-- 継承元のCSSを保持 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='messages_page.css') }}">
+{% endblock %}
+
+<!-- ページタイトルの反映 -->
+{% block title %}Komorebi-Messages{% endblock %}
+
+<!-- コンテンツの反映 -->
+{% block body_content %}
 
   <dialog id = "alert-dialog">
       <p>文字数制限（300文字）を超過しました</p>
@@ -93,4 +97,4 @@
       location.reload();
     }, 600000);
   </script>
-</body>
+{% endblock %}

@@ -4,7 +4,8 @@
 <!-- CSSの適用 -->
 {% block css_style %}
   {{ super() }} <!-- 継承元のCSSを保持 -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='signup_page.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth-css.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='signup-page.css') }}">
 {% endblock %}
 
 <!-- ページタイトルの反映 -->
