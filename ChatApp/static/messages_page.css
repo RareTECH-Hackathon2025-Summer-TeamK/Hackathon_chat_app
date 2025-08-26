@@ -148,3 +148,7 @@ footer {
   margin: 50px 10px 10px;
   float: right;
 }
+
+dialog form {
+  background-color: rgb(138, 133, 133);
+}

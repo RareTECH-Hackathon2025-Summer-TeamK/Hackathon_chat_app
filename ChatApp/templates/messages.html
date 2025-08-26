@@ -1,84 +1,121 @@
 <!-- base.htmlの読み込み -->
 {% extends "base.html" %}
 
-<!-- CSSの適用 -->
+<!-- CSS の適用 -->
 {% block css_style %}
   {{ super() }} <!-- 継承元のCSSを保持 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='messages_page.css') }}">
 {% endblock %}
 
-<!-- ページタイトルの反映 -->
+<!-- ページタイトル -->
 {% block title %}Komorebi-Messages{% endblock %}
 
-<!-- コンテンツの反映 -->
+<!-- コンテンツ -->
 {% block body_content %}
 
-  <dialog id = "alert-dialog">
-      <p>文字数制限（300文字）を超過しました</p>
-      <p>300文字以内でメッセージを作成してください</p>
-      <form method="dialog">
-        <button>Close</button>
-      </form>
+  <!-- アラートダイアログ -->
+  <dialog id="alert-dialog">
+    <p>文字数制限（300文字）を超過しました</p>
+    <p>300文字以内でメッセージを作成してください</p>
+    <form method="dialog">
+      <button>OK</button>
+    </form>
   </dialog>
 
   <div class="content">
+    <!-- ヘッダー部分 -->
     <header>
-      <a href="{{ url_for('logout') }}" id="exit"><img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト"></a>
-      <h1><a href="{{ url_for('channels_view') }}" style="text-decoration: none;">＜{{channel.channel_name}}</a></h1>
-      <!-- text-decoration: none;でリンク部分の下線を見えないようにする -->
+      <a href="{{ url_for('logout') }}" id="exit">
+        <img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト">
+      </a>
+      <h1>
+        <a href="{{ url_for('channels_view') }}" style="text-decoration: none;"> <!-- text-decoration: none; でリンクの下線を消す -->
+          ＜{{ channel.channel_name }}
+        </a>
+      </h1>
     </header>
 
+    <!-- メイン部分（メッセージ一覧） -->
     <main>
       {% for message in messages %}
       <div class="message-wrapper">
+
         {% if message.user_id == uid %}
-          <!-- チェックボックスをwrapperの直下に配置 -->
-          <input type="checkbox" id="edit-toggle-{{ message.message_id }}" class="edit-toggle-checkbox" style="display: none;">
+          <!-- 編集用トグルチェックボックス -->
+          <input
+            type="checkbox"
+            id="edit-toggle-{{ message.message_id }}"
+            class="edit-toggle-checkbox"
+            style="display: none;"
+          >
         {% endif %}
 
+        <!-- 各メッセージ -->
         <div class="message{% if message.user_id == uid %} own-message{% endif %}">
           <!-- ユーザー名 -->
           <p id="messege-name">{{ message.user_name }}</p>
+          
           <!-- メッセージ内容 -->
-          <p>{{message.message_content}}</p>
+          <p>{{ message.message_content }}</p>
 
           {% if message.user_id == uid %}
-            <div class="message-actions">
-              <!-- 編集ボタン(label) -->
-              <label for="edit-toggle-{{ message.message_id }}" class="message-btn">
-                <img src="{{ url_for('static', filename='img/pen.png') }}" alt="編集">
-              </label>
-              <!-- メッセージ削除ボタン -->
-              <form method="POST" action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}" class="delete-form">
-                  <button type="submit" class="message-btn">
-                    <img src="{{ url_for('static', filename='img/trash.png') }}" alt="削除">
-                  </button>
-              </form>
-            </div>
+          <!-- メッセージ操作（編集・削除） -->
+          <div class="message-actions">
+            <!-- 編集ボタン -->
+            <label for="edit-toggle-{{ message.message_id }}" class="message-btn">
+              <img src="{{ url_for('static', filename='img/pen.png') }}" alt="編集">
+            </label>
+            <!-- 削除ボタン -->
+            <form
+              method="POST"
+              action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}"
+              class="delete-form"
+            >
+              <button type="submit" class="message-btn">
+                <img src="{{ url_for('static', filename='img/trash.png') }}" alt="削除">
+              </button>
+            </form>
+          </div>
           {% endif %}
         </div>
 
         {% if message.user_id == uid %}
         <!-- メッセージ編集フォーム -->
         <div id="edit-form-{{ message.message_id }}" class="edit-form">
-            <form method="POST" action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}/edit">
-              <input type="text" name="edit_message" value="{{ message.message_content }}">
-              <button type="submit">保存</button>
-            </form>
+          <form
+            method="POST"
+            action="/channels/{{ channel.channel_id }}/messages/{{ message.message_id }}/edit"
+          >
+            <input type="text" name="edit_message" value="{{ message.message_content }}">
+            <button type="submit">保存</button>
+          </form>
         </div>
         {% endif %}
+
       </div>
       {% endfor %}
     </main> 
 
+    <!-- フッター部分（メッセージ送信フォーム） -->
     <footer>
-      <form class="message-form" method="POST" action="{{ url_for('create_message', cid=channel.channel_id) }}">
-        <input type="text" name="create_message" placeholder="メッセージを入力してください" id="form" maxlength="300">
+      <form
+        class="message-form"
+        method="POST"
+        action="{{ url_for('create_message', cid=channel.channel_id) }}"
+      >
+        <input
+          type="text"
+          name="create_message"
+          placeholder="メッセージを入力してください"
+          id="form"
+          maxlength="300"
+        >
         <button type="submit" class="btn" id="form-btn">
           <img src="{{ url_for('static', filename='img/paper_airplane.png') }}" alt="送信">
         </button>
       </form>
 
+      <!-- 文字数制限チェック -->
       <script>
         document.querySelector('.message-form').addEventListener('submit', function(e) {
           var input = document.getElementById('form');
@@ -88,13 +125,14 @@
           }
         });
       </script>
-
     </footer>
   </div>
+
+  <!-- 自動リロード（5分ごと） -->
   <script>
-    // 10分（600000ミリ秒）ごとにページをリロードします。
     setTimeout(function() {
       location.reload();
-    }, 600000);
+    }, 300000);
   </script>
+
 {% endblock %}
