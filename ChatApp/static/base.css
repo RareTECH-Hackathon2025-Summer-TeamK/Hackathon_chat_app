@@ -39,3 +39,16 @@ body {
     box-sizing: border-box;
   }
 }
+
+header {
+  text-align: left;
+  border-bottom: 2px solid #A4DD00;
+}
+
+/* #exit ボタン */
+#exit img {
+  width: 25px;
+  height: 25px;
+  margin: 50px 10px 10px;
+  float: right;
+}
