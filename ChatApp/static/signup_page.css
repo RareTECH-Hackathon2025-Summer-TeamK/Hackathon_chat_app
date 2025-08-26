@@ -9,7 +9,7 @@ body {
   /* .content 要素の最大の横幅 */
   max-width: 415px; 
   /* .content 要素の最大の縦幅 */
-  max-height: 874px;
+  max-height: 915px;
   /* 外側の余白 */
   margin: 0 auto;
   /* 内側の余白 */
@@ -22,15 +22,9 @@ body {
   height: 100vh;
 }
 
-.logo-text {
-  /* 外側の余白 */
-  margin: 50px 20px 53px;
-  /* フォントサイズ */
-  font-size: 48px;
-  /* 文字間のスペース */
-  letter-spacing: 2px;
-  /* 文字色 */
-  color: #24c70e; 
+.title-logo {
+  max-width: 100%;
+  margin:  75px 0px 75px;
 }
 
 .form-text {

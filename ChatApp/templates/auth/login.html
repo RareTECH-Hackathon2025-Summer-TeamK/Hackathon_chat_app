@@ -8,32 +8,26 @@
 </head>
 
 <body>
-<div class="content">
-    <section>
-        <h1 class="logo-text">こもれび</h1>
-    </section>
+    <div class="content">
+        <img src="static/img/title-logo.png" class="title-logo">
+        <form method="post">
+            <section>
+                <label class="login-form-text">
+                    メールアドレス<br>
+                    <input type="email" name="email">
+                    <p>※50文字以内に設定してください</p>
+                </label>
 
-    <form method="post">
-        <section>
-            <label class="login-form-text">
-                メールアドレス<br>
-                <input type="email" name="email">
-                <p>※50文字以内に設定してください</p>
-            </label>
-
-            <label class="login-form-text">
-                パスワード<br>
-                <input type="password" name="password">
-                <p>※120文字以内に設定してください</p>
-            </label>
-        </section>
-
-        <section>
-            <button type="submit" class="btn" id="login-btn">ログイン</button>
-        </section>
-    </form>
-
-</div>
-
+                <label class="login-form-text">
+                    パスワード<br>
+                    <input type="password" name="password">
+                    <p>※120文字以内に設定してください</p>
+                </label>
+            </section>
+            <section>
+                <button type="submit" class="btn" id="login-btn">ログイン</button>
+            </section>
+        </form>
+    </div>
 </body>
 </html>
