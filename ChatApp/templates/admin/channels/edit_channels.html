@@ -18,16 +18,23 @@
       <div class="edit_channels">
         {% for channel in channels %}
           <div class="channel">
-              <p class="channel_name">{{ channel['channel_name'] }}</p>
-              <form
-              method="POST"
-              action="/admin/channels/{{ channel.channel_id }}"
-              class="delete-form"
-              >
-                <button class="del_btn">削除</button>
-              </form>
+            <div class="channel-view" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+              <span class="channel_name">{{ channel['channel_name'] }}</span>
+              <button type="button" class="channel_btn" id="edit_btn">更新</button>
+            </div>
+            <form method="POST" action="{{ url_for('edit_channel', cid=channel.channel_id) }}" class="edit-form" style="display: none;">
+              <input type="text" name="new_channel_name" value="{{ channel['channel_name'] }}" required>
+              <button type="submit" class="channel_btn" id="edit_btn">更新</button>
+            </form>
+            <form
+            method="POST"
+            action="/admin/channels/{{ channel.channel_id }}"
+            class="delete-form"
+            >
+              <button class="channel_btn">削除</button>
+            </form>
           </div>
-        {% endfor %}  
+        {% endfor %}
       </div>
       <div class="add-channel">
         <button class="add_btn" type="submit" >
@@ -38,5 +45,23 @@
           </a>
         </button>
       </div>
-    </div>  
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const channels = document.querySelectorAll('.channel');
+        channels.forEach(channel => {
+          const view = channel.querySelector('.channel-view');
+          const editForm = channel.querySelector('.edit-form');
+          const editButton = view ? view.querySelector('#edit_btn') : null;
+
+          if (editButton) {
+            editButton.addEventListener('click', () => {
+              if (view) view.style.display = 'none';
+              if (editForm) editForm.style.display = 'flex';
+            });
+          }
+        });
+      });
+    </script>
   </body>
+</html>

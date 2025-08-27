@@ -105,7 +105,7 @@ def channels_view():
     email = session["email"]
     user = User.find_by_email(email)
     channels = Channel.get_all()
-    return render_template('create_channel.html', channels=channels, user=user)
+    return render_template('channels.html', channels=channels, user=user)
 
 ## チャンネル編集ページの表示（管理者ユーザーのみ）  
 @app.route('/admin/channels', methods=['GET'])
@@ -154,16 +154,32 @@ def create_channel():
         return render_template('error/error.html', error_message=error)
 
 ##チャンネル編集（管理者ユーザーのみ） 
-@app.route('/admin/channels/update/<cid>', methods=['POST'])
-def update_channel(cid):
-    user_id = session.get('user_name')
-    if user_id is None:
+@app.route('/admin/channels/edit/<cid>', methods=['POST'])
+def edit_channel(cid):
+    uid = session.get('user_id')
+    if uid is None:
         return redirect(url_for('login_view'))
     
-    channel_name = request.form.get('channelTitle')
+    email = session["email"]
+    user = User.find_by_email(email)
+    
+    if not user.get('is_admin'):
+        return redirect(url_for('channels_view'))
 
-    Channel.update(cid, channel_name,)
-    return redirect(f'/channels/{cid}/messages')
+    new_channel_name = request.form.get('new_channel_name')
+    
+    if not new_channel_name:
+        flash('チャンネル名を入力してください。')
+        return redirect(url_for('edit_channels_view'))
+
+    existing_channel = Channel.find_by_name(new_channel_name)
+    if existing_channel and str(existing_channel['channel_id']) != str(cid):
+        flash('既に同じ名前のチャンネルが存在しています')
+        return redirect(url_for('edit_channels_view'))
+
+    Channel.update(cid, new_channel_name)
+    flash('チャンネル名が更新されました。')
+    return redirect(url_for('edit_channels_view'))
 
 ## チャンネルの削除（管理者ユーザーのみ）  
 @app.route('/admin/channels/<cid>', methods=['POST'])
@@ -194,7 +210,7 @@ def messages(cid):
     return render_template('messages.html', uid=uid, channel=channel, messages=messages)
 
 # メッセージの投稿
-@app.route('/channels/<int:cid>/messages', methods=['POST'])
+@app.route('/channels/<cid>/messages', methods=['POST'])
 def create_message(cid):
     user_id = session.get('user_id')
     message = request.form.get('create_message')
@@ -202,7 +218,7 @@ def create_message(cid):
     return redirect(url_for('messages', cid=cid))
 
 # メッセージの削除
-@app.route('/channels/<int:cid>/messages/<int:message_id>', methods=['POST'])
+@app.route('/channels/<cid>/messages/<int:message_id>', methods=['POST'])
 def delete_message(cid, message_id):
     user_id = session.get('user_id')
     message = Message.find_by_id(message_id)
@@ -213,7 +229,7 @@ def delete_message(cid, message_id):
     return redirect(url_for('messages', cid=cid)) 
 
 # メッセージの編集
-@app.route('/channels/<int:cid>/messages/<int:message_id>/edit', methods=['POST'])
+@app.route('/channels/<cid>/messages/<int:message_id>/edit', methods=['POST'])
 def edit_message(cid, message_id):
     user_id = session.get('user_id')
     message = Message.find_by_id(message_id)
