@@ -29,7 +29,11 @@
         <img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト">
       </a>
       <h1>
-        <a href="{{ url_for('channels_view') }}" style="text-decoration: none;"> <!-- text-decoration: none; でリンクの下線を消す -->
+        {% if user.is_admin %}
+        <a href="{{ url_for('edit_channels_view') }}" style="text-decoration: none;">
+        {% else %}
+        <a href="{{ url_for('channels_view') }}" style="text-decoration: none;">
+        {% endif %}
           ＜{{ channel.channel_name }}
         </a>
       </h1>

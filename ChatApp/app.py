@@ -203,11 +203,14 @@ def messages(cid):
     uid = session.get('user_id')
     if uid is None:
         return redirect(url_for('login_view'))
+    
+    email = session.get('email')
+    user = User.find_by_email(email)
     channel = Channel.find_by_cid(cid)
     if channel is None:
         abort(404) # チャンネルが存在しない場合は404エラー
     messages = Message.get_all(cid)
-    return render_template('messages.html', uid=uid, channel=channel, messages=messages)
+    return render_template('messages.html', uid=uid, channel=channel, messages=messages, user=user)
 
 # メッセージの投稿
 @app.route('/channels/<cid>/messages', methods=['POST'])

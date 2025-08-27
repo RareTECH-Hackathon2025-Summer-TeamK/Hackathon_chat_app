@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style_3.css') }}">
     <title>Komorebi-Edit-Messages</title>
   </head>
-   <body>
+  <body>
     <div class="container">
       <div class="nav">
         <a href="{{ url_for('logout') }}" id="exit">
@@ -19,7 +19,9 @@
         {% for channel in channels %}
           <div class="channel">
             <div class="channel-view" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-              <span class="channel_name">{{ channel['channel_name'] }}</span>
+              <a href="{{ url_for('messages', cid=channel.channel_id) }}" style="text-decoration: none;">
+                <span class="channel_name">{{ channel['channel_name'] }}</span>
+              </a>
               <button type="button" class="channel_btn" id="edit_btn">更新</button>
             </div>
             <form method="POST" action="{{ url_for('edit_channel', cid=channel.channel_id) }}" class="edit-form" style="display: none;">
