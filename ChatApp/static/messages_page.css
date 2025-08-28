@@ -117,7 +117,3 @@ footer {
 .edit-toggle-checkbox:checked ~ .edit-form {
   display: block;
 }
-
-dialog {
-  background-color: rgb(156, 150, 150);
-}
