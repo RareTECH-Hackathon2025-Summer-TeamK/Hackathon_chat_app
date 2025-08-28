@@ -13,15 +13,6 @@
 <!-- コンテンツ -->
 {% block body_content %}
 
-  <!-- アラートダイアログ -->
-  <dialog id="alert-dialog">
-    <p>文字数制限（300文字）を超過しました</p>
-    <p>300文字以内でメッセージを作成してください</p>
-    <form method="dialog">
-      <button>OK</button>
-    </form>
-  </dialog>
-
   <div class="content">
     <!-- ヘッダー部分 -->
     <header>
@@ -29,7 +20,11 @@
         <img src="{{ url_for('static', filename='img/exit.png') }}" alt="ログアウト">
       </a>
       <h1>
-        <a href="{{ url_for('channels_view') }}" style="text-decoration: none;"> <!-- text-decoration: none; でリンクの下線を消す -->
+        {% if user.is_admin %}
+        <a href="{{ url_for('edit_channels_view') }}" style="text-decoration: none;">
+        {% else %}
+        <a href="{{ url_for('channels_view') }}" style="text-decoration: none;">
+        {% endif %}
           ＜{{ channel.channel_name }}
         </a>
       </h1>
@@ -115,16 +110,6 @@
         </button>
       </form>
 
-      <!-- 文字数制限チェック -->
-      <script>
-        document.querySelector('.message-form').addEventListener('submit', function(e) {
-          var input = document.getElementById('form');
-          if (input.value.length >= 300) {
-            document.querySelector('#alert-dialog').showModal();
-            e.preventDefault(); // 送信中止
-          }
-        });
-      </script>
     </footer>
   </div>
 
